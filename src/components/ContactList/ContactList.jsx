@@ -1,20 +1,10 @@
 import Contact from '../Contact/Contact.jsx';
 import css from './ContactList.module.css';
 import { useSelector } from 'react-redux';
-import { selectContacts } from '../../redux/contactsSlice.js';
-import { selectFilters } from '../../redux/filtersSlice.js';
-import { useDebounce } from 'use-debounce';
+import { selectFilteredContacts } from '../../redux/contactsSlice.js';
 
 export default function ContactList() {
-  // const contacts = useSelector((state) => state.contacts.items);
-  const contacts = useSelector(selectContacts);
-  // const filter = useSelector((state) => state.filters.enter);
-  const filter = useSelector(selectFilters);
-  const [debouncedFilter] = useDebounce(filter, 300);
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(debouncedFilter.toLowerCase()),
-  );
+  const filteredContacts = useSelector(selectFilteredContacts);
 
   return (
     <ul className={css.container}>

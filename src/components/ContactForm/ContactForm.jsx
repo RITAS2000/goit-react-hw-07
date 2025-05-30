@@ -5,8 +5,7 @@ import { AiFillPhone } from 'react-icons/ai';
 import { IoMdPerson } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from '../../redux/contactsSlice.js';
-import { addContact } from '../../redux/contactsSlice.js';
-import { nanoid } from 'nanoid';
+import { addContact } from '../../redux/contactsOps';
 
 const initialValues = {
   name: '',
@@ -19,7 +18,7 @@ const ContactFormSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   number: Yup.string()
-    .matches(/^\d{3}-\d{2}-\d{2}$/, 'Phone must be in format 123-45-67')
+    .matches(/^\+?[1-9]\d{1,14}$/, 'Phone number is not valid')
     .required('Required'),
 });
 
@@ -41,7 +40,6 @@ export default function ContactForm() {
       if (haveContact) {
         dispatch(
           addContact({
-            id: nanoid(),
             name: values.name,
             number: values.number,
           }),
@@ -53,7 +51,6 @@ export default function ContactForm() {
 
     dispatch(
       addContact({
-        id: nanoid(),
         name: values.name,
         number: values.number,
       }),
